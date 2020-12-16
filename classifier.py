@@ -4,7 +4,7 @@ import numpy as np
 from skimage import transform
 
 
-class digitClassifier():
+class digit_classifier():
 
     model = tf.keras.models.load_model(
         'D:/Projects/Python/VirtualPen_OpenCV/Model', compile=False, options=False)

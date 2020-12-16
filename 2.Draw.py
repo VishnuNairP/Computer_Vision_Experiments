@@ -1,11 +1,10 @@
 import cv2
-import numpy as np
 import tensorflow as tf
 from PIL import Image
 import numpy as np
 from skimage import transform
 from tensorflow.python.ops.gen_math_ops import imag_eager_fallback
-from classifier import digitClassifier as dc
+from classifier import digit_classifier as dc
 
 
 class drawingCanvas():
@@ -28,42 +27,42 @@ class drawingCanvas():
             if self.canvas is None:
                 self.canvas = np.zeros_like(self.frame)
 
-            mask = self.CreateMask()
-            contours = self.ContourDetect(mask)
+            mask = self.create_mask()
+            contours = self.contour_detect(mask)
             self.display()
             if k == ord('d'):
-                self.drawLine(contours)
+                self.draw_line(contours)
                 # self.display()
             # k = cv2.waitKey(1) & 0xFF
             if k == ord('o'):
                 print("Key press is detected!")
                 image = self.canvas
-                fileName = "stream.jpg"
-                cv2.imwrite(fileName, image)
+                file_name = "stream.jpg"
+                cv2.imwrite(file_name, image)
                 # self.digit_predict(image)
-                imageLabel = dc.driver(dc, fileName)
-                print(imageLabel)
+                image_label = dc.driver(dc, file_name)
+                print(image_label)
 
-            self.takeAction(k)
+            self.take_action(k)
 
             # if esc key is pressed exit
             if k == 27:
                 break
 
-    def CreateMask(self):
+    def create_mask(self):
         hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
         lower_range = self.penrange[0]
         upper_range = self.penrange[1]
         mask = cv2.inRange(hsv, lower_range, upper_range)
         return mask
 
-    def ContourDetect(self, mask):
+    def contour_detect(self, mask):
         # Find Contours
         contours, hierarchy = cv2.findContours(
             mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         return contours
 
-    def drawLine(self, contours):
+    def draw_line(self, contours):
         # if contour area is not none and is greater than 100 draw the line
         if contours and cv2.contourArea(max(contours, key=cv2.contourArea)) > 100:
             c = max(contours, key=cv2.contourArea)
@@ -87,7 +86,7 @@ class drawingCanvas():
         cv2.imshow('frame', self.frame)
         cv2.imshow('canvas', self.canvas)
 
-    def takeAction(self, k):
+    def take_action(self, k):
         # When c is pressed clear the entire canvas
         if k == ord('c'):
             self.canvas = None
@@ -97,8 +96,8 @@ class drawingCanvas():
 
     def digit_predict(self, frame):
 
-        imageLabel = dc.driver(dc, frame)
-        print(imageLabel)
+        image_label = dc.driver(dc, frame)
+        print(image_label)
 
 
 if __name__ == '__main__':
