@@ -33,14 +33,14 @@ class drawingCanvas():
             self.display()
             if k == ord('d'):
                 self.drawLine(contours)
-                #self.display()
-            #k = cv2.waitKey(1) & 0xFF
+                # self.display()
+            # k = cv2.waitKey(1) & 0xFF
             if k == ord('o'):
                 print("Key press is detected!")
                 image = self.canvas
                 fileName = "stream.jpg"
                 cv2.imwrite(fileName, image)
-                #self.digit_predict(image)
+                # self.digit_predict(image)
                 imageLabel = dc.driver(dc, fileName)
                 print(imageLabel)
 
@@ -74,7 +74,7 @@ class drawingCanvas():
             else:
                 # Draw the line on the canvas
                 self.canvas = cv2.line(self.canvas, (self.x1, self.y1), (x2, y2), [
-                                       255*self.val, 0, 0], 10)
+                    255 * self.val, 0, 0], 10)
             # New point becomes the previous point
             self.x1, self.y1 = x2, y2
         else:
@@ -94,14 +94,11 @@ class drawingCanvas():
         # press e to change between eraser mode and writing mode
         if k == ord('e'):
             self.val = int(not self.val)
-    
+
     def digit_predict(self, frame):
 
         imageLabel = dc.driver(dc, frame)
-        print(imageLabel)  
-
-
-
+        print(imageLabel)
 
 
 if __name__ == '__main__':
